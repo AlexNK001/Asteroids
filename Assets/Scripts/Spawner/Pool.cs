@@ -1,26 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.Pool;
 
-public sealed class Pool<T> where T : BaseObject
+public sealed class Pool<T> where T : PhysicBody
 {
     private readonly T _prefab;
-    private readonly ObjectPool<T> _objectPool;
+    private readonly ObjectPool<T> _bodyPool;
 
     public Pool(T prefab)
     {
         _prefab = prefab;
-        _objectPool = new ObjectPool<T>(OnCreate, OnGet, OnRelease, OnDestroy);
+        _bodyPool = new ObjectPool<T>(OnCreate, OnGet, OnRelease, OnDestroy);
     }
 
     public T Get()
     {
-        var objectPool = _objectPool.Get();
+        var objectPool = _bodyPool.Get();
         return objectPool;
     }
 
     public void Release(T physic)
     {
-        _objectPool.Release(physic);
+        _bodyPool.Release(physic);
     }
 
     private void OnDestroy(T physic)

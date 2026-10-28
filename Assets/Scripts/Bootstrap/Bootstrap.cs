@@ -3,7 +3,6 @@ using Zenject;
 
 public class Bootstrap : MonoInstaller
 {
-    // [SerializeField] private GameFlow _gameFlow;
     [SerializeField] private Ship _ship;
     [Header("Prefabs")] 
     [SerializeField] private SmallAsteroid _smallAsteroidPrefab;
@@ -25,7 +24,6 @@ public class Bootstrap : MonoInstaller
         DeclareSignals();
         BindConfig();
         
-        // Container.Bind<GameFlow>().FromInstance(_gameFlow).AsSingle().NonLazy();
         Container.Bind<Ship>().FromInstance(_ship).AsSingle().NonLazy();
         Container.Bind<Spawner>().FromInstance(_spawner).AsSingle().NonLazy();
 
@@ -67,33 +65,33 @@ public class Bootstrap : MonoInstaller
 
     private void BindPools()
     {
-        PoolContainer container = new PoolContainer();
-        container.BigAsteroidPool = new Pool<BigAsteroid>(_bigAsteroidPrefab);
-        container.SmallAsteroidPool = new Pool<SmallAsteroid>(_smallAsteroidPrefab);
-        container.UfoPool = new Pool<Ufo>(_ufoPrefab);
-        container.RocketPool = new Pool<Rocket>(_rocketPrefab);
+        var container = new PoolContainer
+        {
+            BigAsteroidPool = new Pool<BigAsteroid>(_bigAsteroidPrefab),
+            SmallAsteroidPool = new Pool<SmallAsteroid>(_smallAsteroidPrefab),
+            UfoPool = new Pool<Ufo>(_ufoPrefab),
+            RocketPool = new Pool<Rocket>(_rocketPrefab)
+        };
+        
         Container.BindInstance(container).AsSingle().NonLazy();
     }
 
     private void BindServices()
     {
-        Container.Bind<ContactHandler>().AsSingle().NonLazy();
+        Container.Bind<CollisionService>().AsSingle().NonLazy();
         Container.Bind<HealthService>().AsSingle().NonLazy();
-        Container.Bind<PauseServiсe>().AsSingle().NonLazy();
+        Container.Bind<PauseService>().AsSingle().NonLazy();
         Container.Bind<ScoreService>().AsSingle().NonLazy();
         Container.Bind<SpeedService>().AsSingle().NonLazy();
-        // Container.Bind<PhysicService>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<PhysicService>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<PhysicsService>().AsSingle().NonLazy();
     }
 
     private void DeclareSignals()
     {
         Container.DeclareSignal<EnemyDefeatedSignal>();
-        // Container.DeclareSignal<FixedUpdateSignal>();
-        // Container.DeclareSignal<FrameUpdateSignal>();
-        Container.DeclareSignal<ObjectCreatedSignal>();
-        Container.DeclareSignal<ObjectReleaseSignal>();
-        Container.DeclareSignal<PauseButtonPressedSignal>(); //
+        Container.DeclareSignal<BodyCreatedSignal>();
+        Container.DeclareSignal<BodyReleaseSignal>();
+        Container.DeclareSignal<PauseStateChangedSignal>(); //
         Container.DeclareSignal<PauseStateChanged>();
         Container.DeclareSignal<RocketFiredSignal>();
         Container.DeclareSignal<ScoreChangedSignal>();

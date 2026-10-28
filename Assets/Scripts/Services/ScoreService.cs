@@ -6,7 +6,7 @@ public sealed class ScoreService : IDisposable
 {
     private readonly SignalBus _signalBus;
     private readonly PriceConfig _priceConfig;
-    private readonly Dictionary<ObjectType, int> _rewards;
+    private readonly Dictionary<BodyType, int> _rewards;
 
     public ScoreService(SignalBus signalBus, Config config)
     {
@@ -14,17 +14,17 @@ public sealed class ScoreService : IDisposable
         _priceConfig = config.Price;
         _signalBus.Subscribe<EnemyDefeatedSignal>(OnAdd);
 
-        _rewards = new Dictionary<ObjectType, int>
+        _rewards = new Dictionary<BodyType, int>
         {
-            { ObjectType.SmallAsteroid, _priceConfig.SmallAsteroid },
-            { ObjectType.BigAsteroid, _priceConfig.BigAsteroid },
-            { ObjectType.Ufo, _priceConfig.Ufo }
+            { BodyType.SmallAsteroid, _priceConfig.SmallAsteroid },
+            { BodyType.BigAsteroid, _priceConfig.BigAsteroid },
+            { BodyType.Ufo, _priceConfig.Ufo }
         };
     }
 
     private void OnAdd(EnemyDefeatedSignal defeatedSignal)
     {
-        int score = _rewards[defeatedSignal.Enemy.ObjectType];
+        int score = _rewards[defeatedSignal.Enemy.BodyType];
         var signal = new ScoreChangedSignal(score);
         _signalBus.Fire(signal);
     }

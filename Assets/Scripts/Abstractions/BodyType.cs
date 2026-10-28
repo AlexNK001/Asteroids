@@ -1,4 +1,4 @@
-﻿public enum ObjectType
+﻿public enum BodyType
 {
     Ship,
     Rocket,

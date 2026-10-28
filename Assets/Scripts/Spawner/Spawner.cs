@@ -44,21 +44,21 @@ public sealed class Spawner : MonoBehaviour
 
             switch (point.SpawnObjet)
             {
-                case ObjectType.Rocket:
+                case BodyType.Rocket:
                     Create(point, _rocketPool);
                     break;
                 
-                case ObjectType.Laser:
+                case BodyType.Laser:
                     break;
                 
-                case ObjectType.SmallAsteroid:
+                case BodyType.SmallAsteroid:
                     break;
                 
-                case ObjectType.BigAsteroid:
+                case BodyType.BigAsteroid:
                     Create(point, _bigAsteroidPool);
                     break;
                 
-                case ObjectType.Ufo:
+                case BodyType.Ufo:
                     Create(point, _ufoPool);
                     break;
                 
@@ -69,9 +69,9 @@ public sealed class Spawner : MonoBehaviour
         }
     }
 
-    private void OnRelease(ObjectReleaseSignal signal)
+    private void OnRelease(BodyReleaseSignal signal)
     {
-        switch (signal.ReleasedObject)
+        switch (signal.ReleasedBody)
         {
             case Rocket rocket:
                 _rocketPool.Release(rocket);
@@ -90,7 +90,7 @@ public sealed class Spawner : MonoBehaviour
                 break;
             
             default:
-                Debug.LogError($"Нет пула для объекта типа {signal.ReleasedObject?.GetType().Name}");
+                Debug.LogError($"Нет пула для объекта типа {signal.ReleasedBody?.GetType().Name}");
                 break;
         }
     }
@@ -106,22 +106,22 @@ public sealed class Spawner : MonoBehaviour
         Create(_rocketSpawnPoint, _rocketPool);
     }
 
-    private void Create<T>(SpawnPoint point, Pool<T> pool) where T : BaseObject
+    private void Create<T>(SpawnPoint point, Pool<T> pool) where T : PhysicBody
     {
         var spawnedObject = pool.Get();
         spawnedObject.PlaceAt(point);
-        _signalBus.Fire(new ObjectCreatedSignal(spawnedObject));
+        _signalBus.Fire(new BodyCreatedSignal(spawnedObject));
     }
 
     private void Subscribe()
     {
         _signalBus.Subscribe<RocketFiredSignal>(OnSpawnRocket);
-        _signalBus.Subscribe<ObjectReleaseSignal>(OnRelease);
+        _signalBus.Subscribe<BodyReleaseSignal>(OnRelease);
     }
 
     private void Unsubscribe()
     {
         _signalBus.Unsubscribe<RocketFiredSignal>(OnSpawnRocket);
-        _signalBus.Unsubscribe<ObjectReleaseSignal>(OnRelease);
+        _signalBus.Unsubscribe<BodyReleaseSignal>(OnRelease);
     }
 }

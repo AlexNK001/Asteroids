@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SmallAsteroid : BaseObject
+public class SmallAsteroid : PhysicBody
 {
     [SerializeField] private float _radius = 0.5f;
     public override void Move(float deltaTime)
@@ -8,6 +8,6 @@ public class SmallAsteroid : BaseObject
         throw new System.NotImplementedException();
     }
 
-    public override ObjectType ObjectType => ObjectType.SmallAsteroid;
+    public override BodyType BodyType => BodyType.SmallAsteroid;
     public override float Radius => _radius;
 }

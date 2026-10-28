@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class Ufo : BaseObject
+public class Rocket : PhysicBody
 {
-    [SerializeField] private float _speed = 2f;
-    [SerializeField] private float _radius = 0.5f;
-
-    public override ObjectType ObjectType => ObjectType.Ufo;
+    [SerializeField] private float _speed = 3f;
+    [SerializeField] private float _radius = 3f;
     public override float Radius => _radius;
-    
+    public override BodyType BodyType => BodyType.Rocket;
+
     public override void Move(float deltaTime)
     {
         Vector3 translation = LookDirection * (deltaTime * _speed);

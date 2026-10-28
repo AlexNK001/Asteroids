@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Rocket : BaseObject
+public class BigAsteroid : PhysicBody
 {
-    [SerializeField] private float _speed = 3f;
-    [SerializeField] private float _radius = 3f;
+    [SerializeField] private float _speed = 1f;
+    [SerializeField] private  float _radius;
     public override float Radius => _radius;
-    public override ObjectType ObjectType => ObjectType.Rocket;
+    public override BodyType BodyType => BodyType.BigAsteroid;
 
     public override void Move(float deltaTime)
     {

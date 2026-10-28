@@ -32,7 +32,7 @@ public class UserInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            _signalBus.Fire(new PauseButtonPressedSignal());
+            _signalBus.Fire(new PauseStateChangedSignal());
         }
 
         bool isMoveForwardKeyPressed = Input.GetKey(_moveForwardKey);
@@ -69,28 +69,18 @@ public class UserInput : MonoBehaviour
         _ship.SetSpeed(_speed);
 
         float speedRotation = 90f;
-        // float signLeft = 1f;
-        // float signRight = -1f;
         float tempSpeedRotation = speedRotation * Time.deltaTime;
 
         if (Input.GetKey(_moveLeftKey))
         {
-            // Rotation(signLeft);
             _ship.transform.Rotate(Vector3.forward,  tempSpeedRotation);
             _velocity = Quaternion.AngleAxis(tempSpeedRotation, Vector3.forward) * _velocity;
         }
         else if (Input.GetKey(_moveRightKey))
         {
-            // Rotation(signRight);
             _ship.transform.Rotate(Vector3.back,  tempSpeedRotation);
             _velocity = Quaternion.AngleAxis(tempSpeedRotation, Vector3.back) * _velocity;
         }
-
-        // void Rotation(float sign)
-        // {
-        //     _ship.transform.Rotate(Vector3.forward, sign * tempSpeedRotation);
-        //     _velocity = Quaternion.AngleAxis(sign * tempSpeedRotation, Vector3.forward) * _velocity;
-        // }
 
         float angleBackwardMovement = 90f;
         float minRotationSpeed = 1f;

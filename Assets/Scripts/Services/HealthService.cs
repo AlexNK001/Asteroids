@@ -7,7 +7,7 @@ public class HealthService : IDisposable
 {
     private int _currentHealth;
     private int _maxHealth;
-    private bool _isImmortalized;
+    private bool _isInvulnerability;
 
     private readonly SignalBus _signalBus;
 
@@ -20,19 +20,19 @@ public class HealthService : IDisposable
         _signalBus.Subscribe<ShipTakeDamagedSignal>(OnTakeDamage);
     }
 
-    private async UniTaskVoid Immortalize()
+    private async UniTaskVoid GrantInvulnerability()
     {
-        _isImmortalized = true;
+        _isInvulnerability = true;
         await UniTask.Delay(TimeSpan.FromSeconds(3f));
-        _isImmortalized = false;
+        _isInvulnerability = false;
     }
 
     private void OnTakeDamage()
     {
-        if (_isImmortalized == false)
+        if (_isInvulnerability == false)
         {
             _currentHealth--;
-            Immortalize().Forget();
+            GrantInvulnerability().Forget();
         }
 
         if (_currentHealth <= 0)

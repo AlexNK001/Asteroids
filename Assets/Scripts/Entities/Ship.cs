@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ship : BaseObject
+public class Ship : PhysicBody
 {
     [SerializeField] private float _radius = 0.5f; 
     [SerializeField] private float _speed = 1.0f;
@@ -8,7 +8,7 @@ public class Ship : BaseObject
     
     // public Vector3 Position => transform.position;
     // public Quaternion Rotation => transform.rotation;
-    public override ObjectType ObjectType => ObjectType.Ship;
+    public override BodyType BodyType => BodyType.Ship;
     public override float Radius => _radius;
     public Vector2 LookDirection => transform.up;
 

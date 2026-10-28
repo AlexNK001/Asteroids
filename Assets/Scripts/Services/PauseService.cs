@@ -1,15 +1,15 @@
 ﻿using System;
 using Zenject;
 
-public class PauseServiсe : IDisposable
+public class PauseService : IDisposable
 {
     private readonly SignalBus _signalBus;
     private bool _isPaused;
 
-    public PauseServiсe(SignalBus signalBus)
+    public PauseService(SignalBus signalBus)
     {
         _signalBus = signalBus;
-        _signalBus.Subscribe<PauseButtonPressedSignal>(OnTogglePauseState);
+        _signalBus.Subscribe<PauseStateChangedSignal>(OnTogglePauseState);
     }
 
     private void OnTogglePauseState()
@@ -20,6 +20,6 @@ public class PauseServiсe : IDisposable
 
     public void Dispose()
     {
-        _signalBus.Unsubscribe<PauseButtonPressedSignal>(OnTogglePauseState);
+        _signalBus.Unsubscribe<PauseStateChangedSignal>(OnTogglePauseState);
     }
 }
